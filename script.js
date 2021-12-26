@@ -8,13 +8,13 @@ const winningColor = '#60b347';
 const lostColor = '#ff0000';
 
 function playerLost() {
-  document.querySelector('.message').textContent = 'You lost the game!';
+  displayMessage('You lost the game!');
   document.querySelector('.score').textContent = 0;
   document.querySelector('body').style.backgroundColor = lostColor;
 }
 
 function playerMissed(missedMessage) {
-  document.querySelector('.message').textContent = missedMessage;
+  displayMessage(missedMessage);
 }
 
 function playerPlaying(guessNumber) {
@@ -26,6 +26,14 @@ function playerPlaying(guessNumber) {
   }
 }
 
+function displayMessage(message) {
+  document.querySelector('.message').textContent = message;
+}
+
+function backGroundColor(color) {
+  document.querySelector('body').style.backgroundColor = color;
+}
+
 document.querySelector('.check').addEventListener('click', function () {
   const guess = Number(document.querySelector('.guess').value);
   if (guess >= 1 && guess <= 20) {
@@ -33,10 +41,10 @@ document.querySelector('.check').addEventListener('click', function () {
     if (guess === secretNumber) {
       if (!alreadyWon) {
         alreadyWon = true;
+        displayMessage('Correct number!');
+        backGroundColor(winningColor);
         document.querySelector('.number').textContent = secretNumber;
-        document.querySelector('.message').textContent = 'Correct number!';
         document.querySelector('.highscore').textContent = ++highscore;
-        document.querySelector('body').style.backgroundColor = winningColor;
         document.querySelector('.number').style.width = '30rem';
       }
     } else {
@@ -46,23 +54,23 @@ document.querySelector('.check').addEventListener('click', function () {
 
     //If the player leaves the field blank
   } else if (!guess) {
-    document.querySelector('.message').textContent = 'No number!';
+    displayMessage('No number!');
 
     //When player choose number outside 1 to 20
   } else {
-    document.querySelector('.message').textContent = 'Wrong number!';
+    displayMessage('Wrong number!');
   }
 });
 
 //Reset game
 document.querySelector('.again').addEventListener('click', function () {
   score = 20;
-  document.querySelector('body').style.backgroundColor = '#222';
+  backGroundColor('#222');
+  displayMessage('Start guessing...');
   document.querySelector('.number').style.width = '15rem';
   document.querySelector('.score').textContent = score;
-  document.querySelector('.message').textContent = 'Start guessing...';
   document.querySelector('.number').textContent = '?';
-  secretNumber = Math.trunc(Math.random() * 20) + 1;
   document.querySelector('.guess').value = '';
+  secretNumber = Math.trunc(Math.random() * 20) + 1;
   alreadyWon = false;
 });
